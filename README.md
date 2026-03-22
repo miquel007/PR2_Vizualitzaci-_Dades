@@ -38,3 +38,16 @@ Instal·lar dependències:
 ```bash
 pip install -r requirements.txt
 
+---
+
+## Resultats
+
+### Pie Chart
+![Pie Chart](pie_chart.png)
+
+### Voronoi
+![Voronoi](voronoi_map.png)
+
+### Convex Hull
+![Convex Hull](convex_hull.png)
+
