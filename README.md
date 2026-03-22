@@ -37,7 +37,7 @@ Instal·lar dependències:
 
 ```bash
 pip install -r requirements.txt
-
+````
 ---
 
 ## Resultats
