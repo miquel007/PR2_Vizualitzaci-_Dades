@@ -13,9 +13,26 @@ base_path = Path(__file__).parent
 file_path = base_path / "opendatabcn_esports_instalacions-esportives.csv"
 
 df = pd.read_csv(file_path, encoding='utf-16', sep=',')
+
+# netejar noms
 df.columns = df.columns.str.strip()
 
+# eliminar buits
 df = df.dropna(subset=['geo_epgs_4326_lon', 'geo_epgs_4326_lat'])
+
+# centre de Barcelona
+center_lat = 41.3851
+center_lon = 2.1734
+
+# funció distància (simple)
+def distance(lat, lon):
+    return np.sqrt((lat - center_lat)**2 + (lon - center_lon)**2)
+
+# calcular distància
+df['dist'] = distance(df['geo_epgs_4326_lat'], df['geo_epgs_4326_lon'])
+
+# filtrar punts llunyans
+df = df[df['dist'] < 0.3]
 
 # identificar longituds i latituds
 gdf = gpd.GeoDataFrame(
@@ -28,9 +45,6 @@ gdf = gpd.GeoDataFrame(
 )
 
 gdf = gdf.to_crs(epsg=3857)
-
-# reduir punts
-gdf = gdf.sample(50, random_state=1)
 
 # CONVEX HULL
 points = np.array([(geom.x, geom.y) for geom in gdf.geometry])
